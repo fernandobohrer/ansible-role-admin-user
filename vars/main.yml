@@ -1,0 +1,2 @@
+---
+__hushlogin_file: /home/{{ admin_user }}/.hushlogin

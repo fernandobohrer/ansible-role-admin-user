@@ -1,0 +1,81 @@
+---
+- name: Ensure sudo and coreutils packages are installed
+  ansible.builtin.apt:
+    name:
+      - sudo
+      - coreutils
+    state: present
+    update_cache: true
+    cache_valid_time: "{{ apt_cache_valid_time }}"
+
+- name: Ensure admin group exists
+  ansible.builtin.group:
+    name: "{{ admin_group }}"
+    state: present
+
+- name: Ensure admin user exists
+  ansible.builtin.user:
+    name: "{{ admin_user }}"
+    group: "{{ admin_group }}"
+    shell: /bin/bash
+    state: present
+
+- name: Ensure admin user has escalation privileges
+  ansible.builtin.lineinfile:
+    state: present
+    path: /etc/sudoers.d/{{ admin_user }}
+    validate: /usr/sbin/visudo -cf %s
+    regexp: ^{{ admin_user }} ALL=
+    line: "{{ admin_user }} ALL=(ALL) NOPASSWD:ALL"
+    create: true
+    owner: root
+    group: root
+    mode: "644"
+
+- name: Ensure admin user .ssh directory exists
+  ansible.builtin.file:
+    path: /home/{{ admin_user }}/.ssh
+    state: directory
+    owner: "{{ admin_user }}"
+    group: "{{ admin_group }}"
+    mode: "700"
+
+- name: Generate the admin user authorized_keys file
+  ansible.builtin.template:
+    src: authorized_keys.j2
+    dest: /home/{{ admin_user }}/.ssh/authorized_keys
+    owner: "{{ admin_user }}"
+    group: "{{ admin_group }}"
+    mode: "600"
+    backup: true
+
+- name: Check if the hushlogin file exists for the admin user
+  ansible.builtin.stat:
+    path: "{{ __hushlogin_file }}"
+  register: admin_user_hushlogin_file
+
+- name: Ensure the hushlogin file exists for the admin user
+  ansible.builtin.file:
+    path: "{{ __hushlogin_file }}"
+    state: touch
+    owner: "{{ admin_user }}"
+    group: "{{ admin_group }}"
+    mode: "644"
+  when: not admin_user_hushlogin_file.stat.exists
+
+- name: Ensure admin's user .bashrc and .vimrc files are configured
+  vars:
+    __bashrc_file: /home/{{ admin_user }}/.bashrc
+    __vimrc_file: /home/{{ admin_user }}/.vimrc
+    __vimrc_file_owner: "{{ admin_user }}"
+    __vimrc_file_group: "{{ admin_group }}"
+  ansible.builtin.import_tasks: configure-dotfiles.yml
+
+- name: Ensure root user .bashrc and .vimrc files are configured
+  vars:
+    __bashrc_file: /root/.bashrc
+    __vimrc_file: /root/.vimrc
+    __vimrc_file_owner: root
+    __vimrc_file_group: root
+  ansible.builtin.import_tasks: configure-dotfiles.yml
+  when: apply_bashrc_settings_to_root_user | default(true) | bool

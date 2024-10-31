@@ -1,0 +1,34 @@
+---
+apt_cache_valid_time: 3600
+
+admin_user: admin
+admin_group: admin
+
+authorized_ssh_keys:
+  - admin
+
+# By default, the settings below are applied to both the admin_user and the
+# root user. If you do not want to apply the settings below to the root user
+# uncomment the 'apply_bashrc_settings_to_root_user' variable below:
+# apply_bashrc_settings_to_root_user: false
+
+bash_histsize: 100000
+bash_histfilesize: 100000
+
+bash_shopt_options:
+  - shopt -s cmdhist
+  - shopt -s histappend
+
+bash_aliases:
+  - alias ls='ls --color=auto'
+  - alias grep='grep --color=auto'
+
+bash_histignore: ls:htop
+bash_histcontrol: ignoreboth
+bash_histtimeformat: "%Y-%m-%d %H:%M:%S  "
+bash_prompt_command: history -a
+
+vimrc_options:
+  - set mouse-=a
+  - set nu
+  - syntax on

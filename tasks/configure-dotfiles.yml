@@ -1,0 +1,38 @@
+---
+- name: Ensure shopt options are applied to the .bashrc file
+  ansible.builtin.lineinfile:
+    dest: "{{ __bashrc_file }}"
+    regexp: ^{{ item }}$
+    line: "{{ item }}"
+  with_items: "{{ bash_shopt_options }}"
+
+- name: Ensure bash aliases are applied to the .bashrc file
+  ansible.builtin.lineinfile:
+    dest: "{{ __bashrc_file }}"
+    regexp: "{{ item }}"
+    line: "{{ item }}"
+  with_items: "{{ bash_aliases }}"
+
+- name: Ensure additional parameters are applied to the .bashrc file
+  ansible.builtin.lineinfile:
+    dest: "{{ __bashrc_file }}"
+    regexp: ^{{ item.parameter }}=
+    line: "{{ item.parameter }}={{ item.value }}"
+  with_items:
+    - { parameter: HISTSIZE, value: "{{ bash_histsize }}" }
+    - { parameter: HISTIGNORE, value: "'{{ bash_histignore }}'" }
+    - { parameter: HISTFILESIZE, value: "{{ bash_histfilesize }}" }
+    - { parameter: HISTCONTROL, value: "'{{ bash_histcontrol }}'" }
+    - { parameter: HISTTIMEFORMAT, value: "'{{ bash_histtimeformat }}'" }
+    - { parameter: PROMPT_COMMAND, value: "'{{ bash_prompt_command }}'" }
+
+- name: Ensure vimrc options are applied to the .vimrc file
+  ansible.builtin.lineinfile:
+    dest: "{{ __vimrc_file }}"
+    regexp: ^{{ item }}$
+    line: "{{ item }}"
+    create: true
+    owner: "{{ __vimrc_file_owner }}"
+    group: "{{ __vimrc_file_group }}"
+    mode: "644"
+  with_items: "{{ vimrc_options }}"
