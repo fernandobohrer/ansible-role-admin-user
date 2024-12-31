@@ -1,34 +1,34 @@
 ---
 apt_cache_valid_time: 3600
 
-admin_user: admin
-admin_group: admin
+admin_user__user: admin
+admin_user__group: admin
 
-authorized_ssh_keys:
+admin_user__ssh_authorized_keys:
   - admin
 
-# By default, the settings below are applied to both the admin_user and the
+# By default, the settings below are applied to both the admin_user__user and the
 # root user. If you do not want to apply the settings below to the root user
-# uncomment the 'apply_bashrc_settings_to_root_user' variable below:
-# apply_bashrc_settings_to_root_user: false
+# uncomment the 'admin_user__apply_bashrc_settings_to_root_user' variable below:
+# admin_user__apply_bashrc_settings_to_root_user: false
 
-bash_histsize: 100000
-bash_histfilesize: 100000
+admin_user__bash_histsize: 100000
+admin_user__bash_histfilesize: 100000
 
-bash_shopt_options:
+admin_user__bash_shopt_options:
   - shopt -s cmdhist
   - shopt -s histappend
 
-bash_aliases:
+admin_user__bash_aliases:
   - alias ls='ls --color=auto'
   - alias grep='grep --color=auto'
 
-bash_histignore: ls:htop
-bash_histcontrol: ignoreboth
-bash_histtimeformat: "%Y-%m-%d %H:%M:%S  "
-bash_prompt_command: history -a
+admin_user__bash_histignore: ls:htop
+admin_user__bash_histcontrol: ignoreboth
+admin_user__bash_histtimeformat: "%Y-%m-%d %H:%M:%S  "
+admin_user__bash_prompt_command: history -a
 
-vimrc_options:
+admin_user__vimrc_options:
   - set mouse-=a
   - set nu
   - syntax on

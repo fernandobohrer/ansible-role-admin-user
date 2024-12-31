@@ -1,4 +1,4 @@
-# Ansible Role: adminuser
+# Ansible Role: admin_user
 
 An Ansible role that creates an user with administrative profile on Linux boxes.
 
@@ -8,7 +8,7 @@ At least one administrative user is required to manage Linux boxes. It would be 
 
 ## 📑 Role Variables
 
-Check `defaults/main.yml`.
+Check [here][01].
 
 ## 🧰 Dependencies
 
@@ -20,17 +20,17 @@ An example of how integrate this role to an Ansible playbook can be found here:
 
 ```yml
 ---
-- name: Deploy adminuser
+- name: Ensure admin user exists
   hosts: all
   become: true
   gather_facts: true
   vars:
-    admin_user: admin
-    admin_group: admin
-    authorized_ssh_keys:
+    admin_user__user: admin
+    admin_user__group: admin
+    admin_user__ssh_authorized_keys:
       - admin
   roles:
-    - fernandobohrer.adminuser
+    - fernandobohrer.admin_user
 ```
 
 ## ⚙️ Compatibility
@@ -41,7 +41,7 @@ This role was tested on and is confirmed to work with the following Linux distri
 - `Ubuntu 22.04`
 - `Ubuntu 24.04`
 
-Details can be found in the [Molecule][01] scenarios available in the `molecule` folder.
+Details can be found in the [Molecule][02] scenarios available in the `molecule` folder.
 
 ## ⚠️ Warning
 
@@ -51,7 +51,8 @@ With the above in mind, it is **imperative** that you familiarize yourself with 
 
 ## 📝 License
 
-This project is licensed under the terms of the [MIT license][02].
+This project is licensed under the terms of the [MIT license][03].
 
-[01]: https://github.com/fernandobohrer/ansible-molecule-scenarios
-[02]: /LICENSE
+[01]: defaults/main.yml
+[02]: https://github.com/fernandobohrer/ansible-molecule-scenarios
+[03]: /LICENSE
