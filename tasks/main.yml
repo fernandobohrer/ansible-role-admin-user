@@ -1,5 +1,5 @@
 ---
-- name: Ensure sudo and coreutils packages are installed
+- name: Ensure role dependencies are installed
   ansible.builtin.apt:
     name: "{{ __admin_user__role_dependencies }}"
     state: present
