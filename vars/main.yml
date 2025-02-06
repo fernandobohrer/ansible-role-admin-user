@@ -1,6 +1,6 @@
 ---
-__admin_user__hushlogin_file: /home/{{ admin_user__user }}/.hushlogin
-
 __admin_user__role_dependencies:
   - sudo
   - coreutils
+
+__admin_user__hushlogin_file: /home/{{ admin_user__user }}/.hushlogin
