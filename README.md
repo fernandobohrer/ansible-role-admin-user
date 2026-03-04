@@ -8,7 +8,7 @@ At least one administrative user is required to manage Linux boxes. It would be 
 
 ## 📑 Role Variables
 
-Check [here][01].
+Check [defaults/main.yml][01].
 
 ## 🧰 Dependencies
 
